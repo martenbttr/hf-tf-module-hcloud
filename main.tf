@@ -30,24 +30,18 @@ resource "hcloud_server" "node1" {
   server_type = "cx11"
   ssh_keys = ["${var.name}-key"]
 }
- 
-output ipv4 {
-  value       = "${hcloud_server.node1.ipv4_address}"
-  sensitive   = true
-  description = "IPv4 of the generated vm"
-  depends_on  = [hcloud_server.node1]
+
+
+output "private_ip" {
+  value = "${hcloud_server.node1.ipv4_address}"
 }
- 
-output ipv6 {
-  value       = "${hcloud_server.node1.ipv6_address}"
-  sensitive   = true
-  description = "IPv6 of the generated vm"
-  depends_on  = [hcloud_server.node1]
+
+output "public_ip" {
+  value = "${hcloud_server.node1.ipv4_address}"
 }
- 
-output id {
-  value       = "${hcloud_server.node1.id}"
-  sensitive   = true
-  description = "description"
-  depends_on  = []
+
+output "hostname" {
+  value = "${hcloud_server.node1.name}"
 }
+
+ 
