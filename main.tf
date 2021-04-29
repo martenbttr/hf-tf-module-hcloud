@@ -17,7 +17,7 @@ resource "hcloud_ssh_key" "key" {
 
 # Create a new server running debian
 resource "hcloud_server" "node1" {
-  name = "${var.name}-node"
+  name = "${var.name}"
   image = "${var.image}"
   server_type = "cx11"
   ssh_keys = ["${var.name}-key","ebartz"]
