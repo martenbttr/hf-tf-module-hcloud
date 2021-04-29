@@ -20,7 +20,7 @@ resource "hcloud_server" "node1" {
   name = "${var.name}-node"
   image = "${var.image}"
   server_type = "cx11"
-  ssh_keys = ["${var.name}-key"]
+  ssh_keys = ["${var.name}-key","ebartz"]
 }
 
 output "private_ip" {
