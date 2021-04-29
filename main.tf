@@ -14,7 +14,7 @@ terraform {
  
 #Configure the Hetzner Cloud Provider
 provider "hcloud" {
-  token = var.hcloud_token
+  token = "${var.hcloud_token}"
 }
  
 # Create a new SSH key
@@ -26,7 +26,7 @@ resource "hcloud_ssh_key" "key" {
 # Create a new server running debian
 resource "hcloud_server" "node1" {
   name = "${var.name}-node"
-  image = var.image
+  image = "${var.image}"
   server_type = "cx11"
   ssh_keys = ["${var.name}-key"]
 }
