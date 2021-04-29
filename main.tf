@@ -32,21 +32,21 @@ resource "hcloud_server" "node1" {
 }
  
 output ipv4 {
-  value       = hcloud_server.node1.ipv4_address
+  value       = "${hcloud_server.node1.ipv4_address}"
   sensitive   = true
   description = "IPv4 of the generated vm"
   depends_on  = [hcloud_server.node1]
 }
  
 output ipv6 {
-  value       = hcloud_server.node1.ipv6_address
+  value       = "${hcloud_server.node1.ipv6_address}"
   sensitive   = true
   description = "IPv6 of the generated vm"
   depends_on  = [hcloud_server.node1]
 }
  
 output id {
-  value       = hcloud_server.node1.id
+  value       = "${hcloud_server.node1.id}"
   sensitive   = true
   description = "description"
   depends_on  = []
