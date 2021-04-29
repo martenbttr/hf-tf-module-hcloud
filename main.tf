@@ -28,7 +28,7 @@ resource "hcloud_server" "node1" {
   name = "${var.name}-node"
   image = var.image
   server_type = "cx11"
-  ssh_keys = [hcloud_ssh_key.key]
+  ssh_keys = ["${var.name}-key"]
 }
  
 output ipv4 {
