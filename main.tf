@@ -2,6 +2,7 @@ variable "hcloud_token" {}
 variable "public_key" {}
 variable "image" {}
 variable "name" {}
+variable "server_type" {}
 
 #Configure the Hetzner Cloud Provider
 provider "hcloud" {
@@ -19,7 +20,7 @@ resource "hcloud_ssh_key" "key" {
 resource "hcloud_server" "node1" {
   name = "${var.name}"
   image = "${var.image}"
-  server_type = "cx11"
+  server_type = "${var.server_type}"
   ssh_keys = ["${var.name}-key","ebartz"]
 }
 
