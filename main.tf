@@ -4,6 +4,7 @@ variable "image" {}
 variable "name" {}
 variable "server_type" {}
 variable "location" {}
+variable "cloud-config" {}
 
 #Configure the Hetzner Cloud Provider
 provider "hcloud" {
@@ -24,6 +25,7 @@ resource "hcloud_server" "node1" {
   location = "${var.location}"
   server_type = "${var.server_type}"
   ssh_keys = ["${var.name}-key","ebartz"]
+  user_data = "${var.cloud-config}"
 }
 
 output "private_ip" {
