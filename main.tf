@@ -24,7 +24,7 @@ resource "hcloud_server" "node1" {
   image = "${var.image}"
   location = "${var.location}"
   server_type = "${var.server_type}"
-  ssh_keys = ["${var.name}-key","ebartz"]
+  ssh_keys = ["${var.name}-key"]
   user_data = "${var.cloud-config}"
 }
 
