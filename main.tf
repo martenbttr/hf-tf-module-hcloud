@@ -6,6 +6,15 @@ variable "server_type" {}
 variable "location" {}
 variable "cloud-config" {}
 
+terraform {
+  required_providers {
+    hcloud = {
+      source = "hetznercloud/hcloud"
+    }
+  }
+  required_version = ">= 0.13"
+}
+
 #Configure the Hetzner Cloud Provider
 provider "hcloud" {
   version = "= 1.10"
