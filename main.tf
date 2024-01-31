@@ -16,6 +16,15 @@ variable "firewall_ids" {
   description = "Optional firewall IDs for the server, comma-separated"
 }
 
+locals {
+  labels_map = length(var.labels) > 0 ? { for pair in split(",", var.labels) : split("=", pair)[0] => split("=", pair)[1] } : {}
+  firewall_ids_list = length(var.firewall_ids) > 0 ? split(",", var.firewall_ids) : []
+}
+
+locals {
+  
+}
+
 terraform {
   required_providers {
     hcloud = {
@@ -45,21 +54,9 @@ resource "hcloud_server" "node1" {
   server_type = var.server_type
   ssh_keys = ["${var.name}-key"]
   user_data = var.cloud-config
-  
-  dynamic "labels" {
-    for_each = length(var.labels) > 0 ? { for pair in split(",", var.labels) : split("=", pair)[0] => split("=", pair)[1] } : {}
-    content {
-      key   = labels.key
-      value = labels.value
-    }
-  }
 
-  dynamic "firewall" {
-    for_each = length(var.firewall_ids) > 0 ? split(",", var.firewall_ids) : []
-    content {
-      firewall_id = firewall.value
-    }
-  }
+  labels = local.labels_map
+  firewall_ids = length(local.firewall_ids_list) > 0 ? local.firewall_ids_list : null
 }
 
 output "private_ip" {
