@@ -15,6 +15,12 @@ variable "firewall_ids" {
   default     = ""
   description = "Optional firewall IDs for the server, comma-separated"
 }
+variable "poll_interval" {
+  type        = string
+  default     = "1000ms"
+  description = "configures the interval in which actions are polled by the client. Increase if Rate Limiting Errors occur"
+}
+
 
 locals {
   labels_map = length(var.labels) > 0 ? { for pair in split(",", var.labels) : split("=", pair)[0] => split("=", pair)[1] } : {}
@@ -38,6 +44,7 @@ terraform {
 #Configure the Hetzner Cloud Provider
 provider "hcloud" {
   token = var.hcloud_token
+  poll_interval = var.poll_interval
 }
 
 # Create a new SSH key
