@@ -20,6 +20,11 @@ variable "poll_interval" {
   default     = "1000ms"
   description = "configures the interval in which actions are polled by the client. Increase if Rate Limiting Errors occur"
 }
+variable "poll_function" {
+  type        = string
+  default     = "exponential"
+  description = "Configures the type of function to be used during the polling. Valid values are constant and exponential"
+}
 
 
 locals {
@@ -35,7 +40,7 @@ terraform {
   required_providers {
     hcloud = {
       source = "hetznercloud/hcloud"
-      version = "~> 1.41.0"
+      version = "~> 1.45.0"
     }
   }
   required_version = ">= 0.14.0"
@@ -45,6 +50,7 @@ terraform {
 provider "hcloud" {
   token = var.hcloud_token
   poll_interval = var.poll_interval
+  poll_function = var.poll_function
 }
 
 # Create a new SSH key
