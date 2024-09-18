@@ -25,7 +25,11 @@ variable "poll_function" {
   default     = "exponential"
   description = "Configures the type of function to be used during the polling. Valid values are constant and exponential"
 }
-
+variable "network_name" {
+  type        = string
+  default     = "network-1"
+  description = "private Network to join the vm in a predefined network"
+}
 
 locals {
   labels_map = length(var.labels) > 0 ? { for pair in split(",", var.labels) : split("=", pair)[0] => split("=", pair)[1] } : {}
@@ -59,6 +63,12 @@ resource "hcloud_ssh_key" "key" {
   public_key = var.public_key
 }
 
+# Bestehendes Netzwerk abrufen
+data "hcloud_network" "existing_network" {
+  name = var.network_name
+}
+
+
 # Create a new server running debian
 resource "hcloud_server" "node1" {
   name = var.name
@@ -67,10 +77,13 @@ resource "hcloud_server" "node1" {
   server_type = var.server_type
   ssh_keys = ["${var.name}-key"]
   user_data = var.cloud-config
-
+  network {
+    network_id = data.hcloud_network.existing_network.id
+  }
   labels = local.labels_map
   firewall_ids = length(local.firewall_ids_list) > 0 ? local.firewall_ids_list : null
 }
+
 
 output "private_ip" {
   value = hcloud_server.node1.ipv4_address
