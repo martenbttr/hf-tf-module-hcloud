@@ -63,11 +63,17 @@ resource "hcloud_ssh_key" "key" {
   public_key = var.public_key
 }
 
-# Bestehendes Netzwerk abrufen
-data "hcloud_network" "existing_network" {
-  name = var.network_name
+resource "hcloud_network" "network" {
+  name     = var.network_name
+  ip_range = "10.0.0.0/16"
 }
 
+resource "hcloud_network_subnet" "network-subnet" {
+  type         = "cloud"
+  network_id   = hcloud_network.network.id
+  network_zone = "eu-central"
+  ip_range     = "10.0.1.0/24"
+}
 
 # Create a new server running debian
 resource "hcloud_server" "node1" {
@@ -78,7 +84,7 @@ resource "hcloud_server" "node1" {
   ssh_keys = ["${var.name}-key"]
   user_data = var.cloud-config
   network {
-    network_id = data.hcloud_network.existing_network.id
+    network_id = hcloud_network.network.id
   }
   labels = local.labels_map
   firewall_ids = length(local.firewall_ids_list) > 0 ? local.firewall_ids_list : null
